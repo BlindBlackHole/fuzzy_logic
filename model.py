@@ -1,76 +1,72 @@
 input_lvs = [
     {
-        'X': (0, 1, 0.01),
-        'name': 'Distance',
+        'X': (0, 10, 1), # km
+        'name': 'Proximity to Center',  # Близькість до центру
         'terms': {
-            'z1': ('trapmf', 0, 0, 0.15, 0.25),
-            'z2': ('trapmf', 0.2, 0.3, 0.5, 0.7),
-            'z3': ('trapmf', 0.4, 0.55, 1, 1),
+            'very close': ('trapmf', 0, 0, 1, 3),
+            'moderately distant': ('trapmf', 2, 3, 4, 5),
+            'far': ('trapmf', 4, 6, 7, 10),
         }
     },
-
     {
-        'X': (0, 1, 0.1),
-        'name': 'State',
+        'X': (0, 200, 1), # m^2
+        'name': 'Area',  # Площа
         'terms': {
-            'without_repair': ('trapmf', 0, 0, 0.2, 0.4),
-            'satisfied': ('trapmf', 0.35, 0.45, 0.55, 0.65),
-            'with_repair': ('trapmf', 0.5, 0.7, 1, 1),
+            'low': ('trapmf', 0, 0, 5, 35),
+            'medium': ('trapmf', 30, 40, 55, 65),
+            'high': ('trapmf', 60, 80, 150, 200),
         }
     },
-
     {
-        'X': (0, 1, 0.01),
-        'name': 'S',
+        'X': (1950, 2024, 1), # Build year
+        'name': 'Modernity',  # Сучасність
         'terms': {
-            'small': ('trapmf', 0, 0, 0.3, 0.45),
-            'average': ('trapmf', 0.3, 0.5, 0.6, 0.75),
-            'extra': ('trapmf', 0.6, 0.75, 1, 1),
+            'old': ('trapmf', 1950, 1950, 1980, 2005),
+            'moderately outdated': ('trapmf', 2003, 2010, 2012, 2016),
+            'new': ('trapmf', 2015, 2019, 2022, 2024),
         }
-    },
+    }
 ]
 
 output_lv = {
-    'X': (0, 1, 0.01),
-    'name': 'Class',
+    'X': (10000, 1000000, 5000), # Price in USD
+    'name': 'Cost',
     'terms': {
-        'none to very little': ('trapmf', 0, 0, 0.05, 0.1),
-        'very low': ('trimf', 0, 0.2, 0.3),
-        'low': ('trapmf', 0.2, 0.3, 0.4, 0.5),
-        'medium': ('trimf', 0.4, 0.5, 0.6),
-        'above medium': ('trimf', 0.5, 0.6, 0.7),
-        'high': ('trapmf', 0.6, 0.7, 0.8, 0.9),
-        'extremely high': ('trapmf', 0.7, 0.9, 1, 1),
+        'low': ('trapmf', 10000, 10000, 15000, 30000),
+        'medium': ('trapmf', 20000, 40000, 60000, 90000),
+        'high': ('trapmf', 80000, 120000, 200000, 500000),
+        'extremely high': ('trapmf', 400000, 650000, 800000, 1000000),
     }
 }
 
-
 rule_base = [
-    (('z1', 'without_repair', 'small'), 'medium'),
-    (('z1', 'without_repair', 'average'), 'medium'),
-    (('z1', 'without_repair', 'extra'), 'medium'),
-    (('z1', 'satisfied', 'small'), 'medium'),
-    (('z1', 'satisfied', 'average'), 'high'),
-    (('z1', 'satisfied', 'extra'), 'high'),
-    (('z1', 'with_repair', 'small'), 'low'),
-    (('z1', 'with_repair', 'average'), 'low'),
-    (('z1', 'with_repair', 'extra'), 'low'),
-    (('z2', 'without_repair', 'small'), 'medium'),
-    (('z2', 'without_repair', 'average'), 'medium'),
-    (('z2', 'without_repair', 'extra'), 'medium'),
-    (('z2', 'satisfied', 'small'), 'medium'),
-    (('z2', 'satisfied', 'average'), 'medium'),
-    (('z2', 'satisfied', 'extra'), 'medium'),
-    (('z2', 'with_repair', 'small'), 'medium'),
-    (('z2', 'with_repair', 'average'), 'medium'),
-    (('z2', 'with_repair', 'extra'), 'medium'),
-    (('z3', 'without_repair', 'small'), 'medium'),
-    (('z3', 'without_repair', 'average'), 'medium'),
-    (('z3', 'without_repair', 'extra'), 'medium'),
-    (('z3', 'satisfied', 'small'), 'medium'),
-    (('z3', 'satisfied', 'average'), 'medium'),
-    (('z3', 'satisfied', 'extra'), 'medium'),
-    (('z3', 'with_repair', 'small'), 'medium'),
-    (('z3', 'with_repair', 'average'), 'medium'),
-    (('z3', 'with_repair', 'extra'), 'medium'),
+    (('very close', 'high', 'new'), 'extremely high'),
+    (('very close', 'medium', 'new'), 'high'),
+    (('very close', 'low', 'new'), 'medium'),
+    (('very close', 'high', 'moderately outdated'), 'extremely high'),
+    (('very close', 'medium', 'moderately outdated'), 'high'),
+    (('very close', 'low', 'moderately outdated'), 'medium'),
+    (('very close', 'high', 'old'), 'high'),
+    (('very close', 'medium', 'old'), 'medium'),
+    (('very close', 'low', 'old'), 'low'),
+
+    (('moderately distant', 'high', 'new'), 'extremely high'),
+    (('moderately distant', 'medium', 'new'), 'high'),
+    (('moderately distant', 'low', 'new'), 'medium'),
+    (('moderately distant', 'high', 'moderately outdated'), 'high'),
+    (('moderately distant', 'medium', 'moderately outdated'), 'medium'),
+    (('moderately distant', 'low', 'moderately outdated'), 'low'),
+    (('moderately distant', 'high', 'old'), 'medium'),
+    (('moderately distant', 'medium', 'old'), 'medium'),
+    (('moderately distant', 'low', 'old'), 'low'),
+
+    (('far', 'high', 'new'), 'high'),
+    (('far', 'medium', 'new'), 'medium'),
+    (('far', 'low', 'new'), 'medium'),
+    (('far', 'high', 'moderately outdated'), 'medium'),
+    (('far', 'medium', 'moderately outdated'), 'medium'),
+    (('far', 'low', 'moderately outdated'), 'low'),
+    (('far', 'high', 'old'), 'medium'),
+    (('far', 'medium', 'old'), 'low'),
+    (('far', 'low', 'old'), 'low'),
 ]
