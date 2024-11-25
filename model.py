@@ -29,7 +29,7 @@ input_lvs = [
 ]
 
 output_lv = {
-    'X': (0, 1, 0.1), # Price in USD
+    'X': (0, 1, 0.1),
     'name': 'Comfort level',
     'terms': {
         'low': ('trapmf', 0, 0, 0.2, 0.35),
