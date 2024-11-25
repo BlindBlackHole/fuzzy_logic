@@ -16,7 +16,7 @@ def calculate_sum():
         inference_mamdani.preprocessing(model.input_lvs, model.output_lv)
         result = inference_mamdani.process(model.input_lvs, model.output_lv, model.rule_base, crisp)
 
-        result_label.config(text=f"Ціна: {int(result[0])}$ ({result[1]})")
+        result_label.config(text=f"Рівень комфорту: {result[0]} ({result[1]})")
     except ValueError as e:
         error_message = f"Сталася помилка: {str(e)}\n{traceback.format_exc()}"
         print(error_message)
@@ -36,31 +36,31 @@ def show_graphs():
     fuzzy_operators.draw_lv(model.output_lv)
 
 root = tk.Tk()
-root.title("Обчислення ціни нерухомості")
+root.title("Обчислення рівню комфорту")
 root.geometry("400x300")
 
-label1 = tk.Label(root, text="Наскільки нерухомість близька до центру (в км):")
+label1 = tk.Label(root, text="Температура:")
 label1.pack()
 
 entry1 = tk.Entry(root)
 entry1.pack()
 
-label2 = tk.Label(root, text="Яка проща нерухомості (м^2):")
+label2 = tk.Label(root, text="Вологість (%):")
 label2.pack()
 
 entry2 = tk.Entry(root)
 entry2.pack()
 
-label3 = tk.Label(root, text="Рік будівництва:")
+label3 = tk.Label(root, text="Освітлення:")
 label3.pack()
 
 entry3 = tk.Entry(root)
 entry3.pack()
 
-calculate_button = tk.Button(root, text="Обчислити ціну", command=calculate_sum)
+calculate_button = tk.Button(root, text="Обчислити рівень комфорту", command=calculate_sum)
 calculate_button.pack()
 
-result_label = tk.Label(root, text="Ціна: ")
+result_label = tk.Label(root, text="Рівень комфорту: ")
 result_label.pack()
 
 graph_button = tk.Button(root, text="Графіки термів", command=show_graphs)
